@@ -252,5 +252,101 @@ node(label: 'uveye-agent') {
 }
 ```
 
+Jenkins Job Console output
+```
+Started by user admin
+Obtained Jenkinsfile from git https://github.com/telraneng/uveye.git
+Running in Durability level: MAX_SURVIVABILITY
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on uveye-agent-00003rn5etdgp on uveye in /home/jenkins/workspace/hello-world-ci
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Clone)
+[Pipeline] git
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+using credential buildbot
+Cloning the remote Git repository
+Cloning repository https://github.com/telraneng/uveye.git
+ > git init /home/jenkins/workspace/hello-world-ci # timeout=10
+Fetching upstream changes from https://github.com/telraneng/uveye.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.7.4'
+using GIT_ASKPASS to set credentials 
+ > git fetch --tags --progress https://github.com/telraneng/uveye.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+Avoid second fetch
+Checking out Revision 8480ca528a7f715aab1d7124562e9ff0082b8380 (refs/remotes/origin/master)
+ > git config remote.origin.url https://github.com/telraneng/uveye.git # timeout=10
+ > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
+ > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 8480ca528a7f715aab1d7124562e9ff0082b8380 # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git checkout -b master 8480ca528a7f715aab1d7124562e9ff0082b8380 # timeout=10
+Commit message: "Jenkinsfile added. Jenkins Docker Slave prepared"
+ > git rev-list --no-walk 9ce8d650c9c0ef326278d30e65ff0f492b0e0f38 # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Build Docker Image)
+[Pipeline] sh
++ docker build -t 192.168.99.107:5000/myapp:0.1.0-r6 .
+Sending build context to Docker daemon  14.85kB
+
+Step 1/5 : FROM nginx
+ ---> 7e4d58f0e5f3
+Step 2/5 : RUN rm /etc/nginx/conf.d/default.conf
+ ---> Using cache
+ ---> 94d7fd113306
+Step 3/5 : COPY nginx-conf /etc/nginx/conf.d
+ ---> Using cache
+ ---> 900123c69c7c
+Step 4/5 : COPY content /usr/share/nginx/html
+ ---> Using cache
+ ---> 85ec0b14f984
+Step 5/5 : EXPOSE 80/tcp
+ ---> Using cache
+ ---> cff31e2d0a63
+Successfully built cff31e2d0a63
+Successfully tagged 192.168.99.107:5000/myapp:0.1.0-r6
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Push Docker Image to Registry)
+[Pipeline] sh
++ docker push 192.168.99.107:5000/myapp:0.1.0-r6
+The push refers to repository [192.168.99.107:5000/myapp]
+d840ee8e771c: Preparing
+7e00f38ff800: Preparing
+a777260d59c6: Preparing
+908cf8238301: Preparing
+eabfa4cd2d12: Preparing
+60c688e8765e: Preparing
+f431d0917d41: Preparing
+07cab4339852: Preparing
+60c688e8765e: Waiting
+f431d0917d41: Waiting
+07cab4339852: Waiting
+908cf8238301: Layer already exists
+eabfa4cd2d12: Layer already exists
+a777260d59c6: Layer already exists
+d840ee8e771c: Layer already exists
+7e00f38ff800: Layer already exists
+60c688e8765e: Layer already exists
+07cab4339852: Layer already exists
+f431d0917d41: Layer already exists
+0.1.0-r6: digest: sha256:ee7fc31340218ade720f02ae42a5c8d41cdbf88c062a9e388a2a7c08f0113c2a size: 1983
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] echo
+Send Mail!!!
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
+
 
 
