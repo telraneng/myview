@@ -347,5 +347,25 @@ Send Mail!!!
 Finished: SUCCESS
 ```
 
+### Jenkins Deploy Job
 
+Creating Jenkins Pipeline job for service deploy
+```
+node(label: 'uveye-agent') {
+    def image = "192.168.99.107:5000/myapp:0.1.0-r${BUILD_NUMBER}"
+    try {
+        stage('Test Registry') {
+            sh "curl http://192.168.99.107:5000/v2/myapp/tags/list | jq '.tags'"
+            tags = sh (script: "curl http://192.168.99.107:5000/v2/myapp/tags/list | jq '.tags'", returnStdout: true)
+            println(tags)
+            sh "docker service update --image 192.168.99.107:5000/myapp:${IMAGE_TAG} helloworld"
+        }
+    } catch (e){
+        currentBuild.result = 'FAILURE'
+        throw e
+    } finally {
+        println("Send Mail!!!")
+    }
+}
+```
 
