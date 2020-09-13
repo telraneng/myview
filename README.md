@@ -136,10 +136,12 @@ worker            -        virtualbox   Running   tcp://192.168.99.104:2376     
 
 Running Jenkins on *jenkins* machine
 ```
-$ docker-machine ssh jenkins 'bash -c "docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts"'
+$ docker-machine ssh jenkins 'bash -c "docker run -d -p 8080:8080 -p 50000:50000 -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/jenkins_home:/var/jenkins_home --privileged --name jenkins jenkins/jenkins:lts"'
 ```
+docker run -d --name jenkinsdoc -p 8080:8080 -p 50000:50000 -v /var/run/docker.sock:/var/run/docker.sock -v $(which docker):$(which docker) -v /tmp/jenkins_home:/var/jenkins_home jenkins/jenkins:lts
+
 
 Querying Jenkins initial admin password from __/var/jenkins_home/secrets/initialAdminPassword__
 ```
-$ docker-machine ssh jenkins 'bash -c "docker exec wizardly_payne cat /var/jenkins_home/secrets/initialAdminPassword"'
+$ docker-machine ssh jenkins 'bash -c "docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword"'
 ```
