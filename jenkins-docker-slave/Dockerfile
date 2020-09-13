@@ -12,7 +12,8 @@ RUN apt-get install -y \
         python \
         python-pip \
         git \
-    vim
+    	vim \
+	jq
 
 RUN apt-get clean
 

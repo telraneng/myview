@@ -150,7 +150,7 @@ $ docker-machine ssh jenkins 'bash -c "docker exec jenkins cat /var/jenkins_home
 
 Building jenkins-docker-slave Docker image from __jenkins-docker-slave/Dockerfile
 ```
-$ cd jenkins-docker-slave && docker build -t jenkins-docker-slave:latest .
+$ cd jenkins-docker-slave && docker build -t 192.168.99.107:5000/jenkins-docker-agent:latest .
 ```
 ```
 FROM ubuntu:16.04 AS base
@@ -214,13 +214,12 @@ CMD [ "python", "-u", "/var/lib/jenkins/slave.py" ]
 
 Saving Docker image and moving it to *worker* machine
 ```
-$ docker save jenkins-docker-slave:latest | qzip > jenkins-docker-slave.tgz
-$ scp jenkins-docker-slave.tgz docker@192.168.99.105:~/
+$ docker push 192.168.99.107:5000/jenkins-docker-agent:latest
 ```
 
 Loading Docker image from archive on *worker* node
 ```
-$ docker load < jenkins-docker-slave.tgz
+$ docker pull 192.168.99.107:5000/jenkins-docker-agent:latest
 ```
 
 > Configuring Jenkins Cloud to use jenkins-docker-slave:latest
