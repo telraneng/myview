@@ -131,3 +131,15 @@ jenkins           *        virtualbox   Running   tcp://192.168.99.101:2376     
 master            -        virtualbox   Running   tcp://192.168.99.103:2376           v19.03.12
 worker            -        virtualbox   Running   tcp://192.168.99.104:2376           v19.03.12
 ```
+
+## Preparing Jenkins
+
+Running Jenkins on *jenkins* machine
+```
+$ docker-machine ssh jenkins 'bash -c "docker run -d --name jenkins -p 8080:8080 -p 50000:50000 -v jenkins_home:/var/jenkins_home jenkins/jenkins:lts"'
+```
+
+Querying Jenkins initial admin password from __/var/jenkins_home/secrets/initialAdminPassword__
+```
+$ docker-machine ssh jenkins 'bash -c "docker exec wizardly_payne cat /var/jenkins_home/secrets/initialAdminPassword"'
+```
