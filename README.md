@@ -86,10 +86,10 @@ README.md
 
 Cloning GitHub repository to local host
 ```
-$ git clone https://github.com/telraneng/uveye.git
+$ git clone https://github.com/telraneng/myview.git
 ```
 
-Building Docker image from __uveye__ directory
+Building Docker image from __myview__ directory
 ```
 $ docker build -t myapp:0.1.0 .
 ```
@@ -132,6 +132,16 @@ master            -        virtualbox   Running   tcp://192.168.99.103:2376     
 worker            -        virtualbox   Running   tcp://192.168.99.104:2376           v19.03.12
 ```
 
+Creating Swarm from *master* machine
+```
+$ docker swarm init --advertise-addr $(ip addr show eth1 | grep inet | head -1 | awk '{ print $2 }' | cut -d/ -f1)
+```
+
+Adding *worker* node to Swarm
+```
+$ docker swarm join --token SWMTKN-1-3kkv8cckpt6jpwznvdfxkx217q0c0kicm4lpntqp0zef3ua2ua-cro2n1qyzbwk9jpugqik0sgmw 192.168.99.103:2377
+```
+
 ## Preparing Jenkins
 
 Running Jenkins on *jenkins* machine
@@ -148,7 +158,7 @@ $ docker-machine ssh jenkins 'bash -c "docker exec jenkins cat /var/jenkins_home
 
 ### Configuring Jenkis Docker Slave
 
-Building jenkins-docker-slave Docker image from __jenkins-docker-slave/Dockerfile
+Building jenkins-docker-slave Docker image from __jenkins-docker-slave/Dockerfile__
 ```
 $ cd jenkins-docker-slave && docker build -t 192.168.99.107:5000/jenkins-docker-agent:latest .
 ```
@@ -212,12 +222,12 @@ ENV CLEAN_WORKING_DIR "true"
 CMD [ "python", "-u", "/var/lib/jenkins/slave.py" ]
 ```
 
-Saving Docker image and moving it to *worker* machine
+Pushing Docker image to local Docker Registry
 ```
 $ docker push 192.168.99.107:5000/jenkins-docker-agent:latest
 ```
 
-Loading Docker image from archive on *worker* node
+Pullong Docker image from local Docker Registry on *master* node
 ```
 $ docker pull 192.168.99.107:5000/jenkins-docker-agent:latest
 ```
@@ -234,7 +244,7 @@ node(label: 'uveye-agent') {
     def image = "192.168.99.107:5000/myapp:0.1.0-r${BUILD_NUMBER}"
     try {
         stage('Clone') {
-            git branch: 'master', credentialsId: 'buildbot', url: 'https://github.com/telraneng/uveye.git'
+            git branch: 'master', credentialsId: 'buildbot', url: 'https://github.com/telraneng/myview.git'
         }
         stage('Build Docker Image') {
             sh "docker build -t ${image} ."
@@ -254,7 +264,7 @@ node(label: 'uveye-agent') {
 Jenkins Job Console output
 ```
 Started by user admin
-Obtained Jenkinsfile from git https://github.com/telraneng/uveye.git
+Obtained Jenkinsfile from git https://github.com/telraneng/myview.git
 Running in Durability level: MAX_SURVIVABILITY
 [Pipeline] Start of Pipeline
 [Pipeline] node
