@@ -211,11 +211,11 @@ WORKDIR /home/jenkins
 ENV JENKINS_URL "http://192.168.99.108:8080"
 ENV JENKINS_SLAVE_ADDRESS ""
 #ENV JENKINS_USER "buildbot"
-#ENV JENKINS_PASS "uveye123"
+#ENV JENKINS_PASS "myview123"
 ENV SLAVE_NAME ""
 ENV SLAVE_SECRET ""
 ENV SLAVE_EXECUTORS "1"
-ENV SLAVE_LABELS "uveye-agent"
+ENV SLAVE_LABELS "myview-agent"
 ENV SLAVE_WORKING_DIR ""
 ENV CLEAN_WORKING_DIR "true"
 
@@ -240,7 +240,7 @@ Creating Jenkins Pipeline Job
 
 Creating Jenkinsfile in gt repository (we can use DSL for docker operations instead of Shell commands)
 ```
-node(label: 'uveye-agent') {
+node(label: 'myview-agent') {
     def image = "192.168.99.107:5000/myapp:0.1.0-r${BUILD_NUMBER}"
     try {
         stage('Clone') {
@@ -268,7 +268,7 @@ Obtained Jenkinsfile from git https://github.com/telraneng/myview.git
 Running in Durability level: MAX_SURVIVABILITY
 [Pipeline] Start of Pipeline
 [Pipeline] node
-Running on uveye-agent-00003rn5etdgp on uveye in /home/jenkins/workspace/hello-world-ci
+Running on myview-agent-00003rn5etdgp on myview in /home/jenkins/workspace/hello-world-ci
 [Pipeline] {
 [Pipeline] stage
 [Pipeline] { (Clone)
@@ -277,16 +277,16 @@ Selected Git installation does not exist. Using Default
 The recommended git tool is: NONE
 using credential buildbot
 Cloning the remote Git repository
-Cloning repository https://github.com/telraneng/uveye.git
+Cloning repository https://github.com/telraneng/myview.git
  > git init /home/jenkins/workspace/hello-world-ci # timeout=10
-Fetching upstream changes from https://github.com/telraneng/uveye.git
+Fetching upstream changes from https://github.com/telraneng/myview.git
  > git --version # timeout=10
  > git --version # 'git version 2.7.4'
 using GIT_ASKPASS to set credentials 
- > git fetch --tags --progress https://github.com/telraneng/uveye.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git fetch --tags --progress https://github.com/telraneng/myview.git +refs/heads/*:refs/remotes/origin/* # timeout=10
 Avoid second fetch
 Checking out Revision 8480ca528a7f715aab1d7124562e9ff0082b8380 (refs/remotes/origin/master)
- > git config remote.origin.url https://github.com/telraneng/uveye.git # timeout=10
+ > git config remote.origin.url https://github.com/telraneng/myview.git # timeout=10
  > git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/* # timeout=10
  > git rev-parse refs/remotes/origin/master^{commit} # timeout=10
  > git rev-parse refs/remotes/origin/origin/master^{commit} # timeout=10
@@ -361,7 +361,7 @@ Finished: SUCCESS
 
 Creating Jenkins Pipeline job for service deploy
 ```
-node(label: 'uveye-agent') {
+node(label: 'myview-agent') {
     def image = "192.168.99.107:5000/myapp:0.1.0-r${BUILD_NUMBER}"
     try {
         stage('Test Registry') {
